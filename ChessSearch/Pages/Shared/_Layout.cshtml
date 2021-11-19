@@ -44,34 +44,11 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/chess.js"></script>
 
     <script src="~/lib/chessboardjs-1.0.0/js/chessboard-1.0.0.js"></script>
-    <script>
-        var board1 = Chessboard('board1', 'start')
-        let results;
-        const chess = new Chess()
+    <script src="~/js/site.js" asp-append-version="true"></script>
 
-        function getGame(play = "", ratings = '1600,1800,2000,2200,2500', speeds = 'blitz,rapid,classical') {
-            fetch(`https://explorer.lichess.ovh/lichess?variant=standard&speeds=${speeds}&play=${play}&ratings=${ratings}`)
-                .then(response => response.json())
-                .then((data) => {
-                    console.log(data);
-                    //return data;
-                    results = data;
-                    document.getElementById('results').value = JSON.stringify(data);
-                    document.getElementById('opening').innerText = results.opening.name;
-                    chess.reset()
-                    for (let move of document.getElementById("moves").value.split(",")) {
-                        chess.move(move, { sloppy: true });
-                        console.log(move);
-
-                    }
-                    board1.position(chess.fen());
-                });
-        };
-    </script>
 
 
     @await RenderSectionAsync("Scripts", required: false)
