@@ -4,16 +4,9 @@
     ViewData["Title"] = "Home page";
 }
 
+
 <script>
-    function getGame(play = "", ratings = '1600,1800,2000,2200,2500', speeds = 'blitz,rapid,classical') {
-        fetch(`https://explorer.lichess.ovh/lichess?variant=standard&speeds=${speeds}&play=${play}&ratings=${ratings}`)
-            .then(response => response.json())
-            .then((data) => {
-                console.log(data);
-                //return data;
-                document.getElementById('results').value = JSON.stringify(data);
-            });
-    };
+
 
 </script>
 
@@ -21,21 +14,44 @@
 
 <h1>Moves:</h1>
 <p>Input a string of moves in UCI notation. Example: e2e4,e7e5,g1f3,b8c6,f1b5</p>
-<input type="text" id="moves" value="e2e4,e7e5,g1f3,b8c6,f1b5"/>
+<input type="text" id="moves" value="e2e4,e7e5,g1f3,b8c6,f1b5" />
 
 <br />
 <br />
 
 <h1>Ratings:</h1>
 <p>Input which ratings to search for. The options are 1600, 1800, 2000, 2200, 2500. Example: 1600,1800,2000</p>
-<input type="text" id="ratings" value="1600,1800,2000"/>
+<input type="text" id="ratings" value="1600,1800,2000" />
 
 <br />
 <br />
-<button onclick="getGame(document.getElementById('moves').value, document.getElementById('ratings').value)">Get Games
+<button onclick="getGame(document.getElementById('moves').value, document.getElementById('ratings').value)">
+    Get Games
 </button>
 
 <br />
 <br />
 
 <textarea readonly id="results" cols="50" rows="7"></textarea>
+
+<br />
+<br />
+
+<div id="board1" style="width: 400px; margin: 0 auto;"></div>
+
+<br />
+<br />
+
+<div style="text-align: center;">
+    <h4>Opening:</h4>
+    <h2 id="opening">(None)</h2>
+</div>
+
+<br />
+<br />
+
+<div class="games">
+    <div class="game">
+
+    </div>
+</div>

@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - WebApplication2</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/chessboard-1.0.0.css" />
 </head>
 <body>
     <header>
@@ -19,11 +20,11 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         @*<li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>*@
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            </li>*@
                     </ul>
                 </div>
             </div>
@@ -44,6 +45,34 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/chess.js"></script>
+
+    <script src="~/lib/chessboardjs-1.0.0/js/chessboard-1.0.0.js"></script>
+    <script>
+        var board1 = Chessboard('board1', 'start')
+        let results;
+        const chess = new Chess()
+
+        function getGame(play = "", ratings = '1600,1800,2000,2200,2500', speeds = 'blitz,rapid,classical') {
+            fetch(`https://explorer.lichess.ovh/lichess?variant=standard&speeds=${speeds}&play=${play}&ratings=${ratings}`)
+                .then(response => response.json())
+                .then((data) => {
+                    console.log(data);
+                    //return data;
+                    results = data;
+                    document.getElementById('results').value = JSON.stringify(data);
+                    document.getElementById('opening').innerText = results.opening.name;
+                    chess.reset()
+                    for (let move of document.getElementById("moves").value.split(",")) {
+                        chess.move(move, { sloppy: true });
+                        console.log(move);
+
+                    }
+                    board1.position(chess.fen());
+                });
+        };
+    </script>
+
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
