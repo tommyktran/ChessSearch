@@ -22,9 +22,8 @@ class ChessData {
     }
 }
 
-var board1 = Chessboard('board1', 'start')
-//let results;
-const chess = new Chess()
+var board1 = Chessboard('board1', 'start');
+const chess = new Chess();
 let data;
 
 let labels;
@@ -63,7 +62,6 @@ function getGame(play = "", ratings = '1600,1800,2000,2200,2500', speeds = 'blit
 
             displayPosition(play);
             displayLinks(chessData.links);
-            
             updateGraph(chessData);
 
             return data;
@@ -74,7 +72,6 @@ function getGame(play = "", ratings = '1600,1800,2000,2200,2500', speeds = 'blit
             chess.reset();
             board1.position(chess.fen());
             document.getElementById('opening').innerText = '(None)';
-
         });
 };
 
