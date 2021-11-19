@@ -1,5 +1,7 @@
 # ChessSearch
 
+Author: Tommy Tran
+
 This project allows you to search for chess games beginning with a specific opening using the Lichess API. After taking in the inputs of the opening moves as well as the ratings that the user would like to search for, the program displays the opening and its name below, as well as the statistics of the most common moves following that position, and recent games played starting with that opening are displayed below.
 
 The program takes move inputs in UCI notation. If you are unfamiliar with this form of chess notation, try these openings to test the program with:
