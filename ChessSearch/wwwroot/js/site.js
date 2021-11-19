@@ -14,8 +14,16 @@
 
 //getGame();
 
+class ChessData {
+    constructor(links, moves, moveData) {
+        this.links = links;
+        this.moves = moves;
+        this.moveData = moveData;
+    }
+}
+
 var board1 = Chessboard('board1', 'start')
-let results;
+//let results;
 const chess = new Chess()
 let data;
 
@@ -38,7 +46,10 @@ function getGame(play = "", ratings = '1600,1800,2000,2200,2500', speeds = 'blit
         .then((data) => {
             console.log(data);
             //return data;
-            results = data;
+
+            let chessData = new ChessData([...data.recentGames], data.moves.map(x => x.san), data.moves.map(x => x.white + x.draws + x.black))
+
+
             if (play !== '') {
                 document.getElementById('results').value = JSON.stringify(data);
             }
@@ -48,11 +59,9 @@ function getGame(play = "", ratings = '1600,1800,2000,2200,2500', speeds = 'blit
                 document.getElementById('opening').innerText = results.opening.name;
             }
             displayPosition();
-            displayLinks(data);
+            displayLinks(chessData.links);
 
-            myChart.data.labels = data.moves.map(x => x.san);
-            myChart.data.datasets[0].data = data.moves.map(x => x.white + x.draws + x.black);
-            myChart.update();
+            updateGraph(chessData);
 
         })
         .catch((error) => {
@@ -74,8 +83,8 @@ function displayPosition() {
     board1.position(chess.fen());
 }
 
-function displayLinks(jsonData) {
-    let games = [...jsonData.recentGames];
+function displayLinks(links) {
+    let games = [...links];
     document.getElementById('games').innerHTML = '';
     for (let game of games) {
         document.getElementById('games').innerHTML += `<p><a href='${makeLichessLink(game.id)}'>${makeLichessLink(game.id)}</a></p>`;
@@ -84,6 +93,12 @@ function displayLinks(jsonData) {
 
 function makeLichessLink(id) {
     return 'https://lichess.org/' + id;
+}
+
+function updateGraph(chessData) {
+    myChart.data.labels = chessData.moves;
+    myChart.data.datasets[0].data = chessData.moveData;
+    myChart.update();
 }
 
 const ctx = document.getElementById('myChart');
@@ -120,5 +135,7 @@ let myChart = new Chart(ctx, {
         }
     },
 });
+
+
 
 getGame();
