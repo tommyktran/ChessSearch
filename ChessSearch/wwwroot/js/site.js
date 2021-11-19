@@ -45,10 +45,10 @@ function getGame(play = "", ratings = '1600,1800,2000,2200,2500', speeds = 'blit
         .then(response => response.json())
         .then((data) => {
             console.log(data);
-            return data;
+            
 
             let chessData = new ChessData([...data.recentGames], data.moves.map(x => x.san), data.moves.map(x => x.white + x.draws + x.black))
-
+            console.log(chessData);
 
             if (play !== '') {
                 document.getElementById('results').value = JSON.stringify(data);
@@ -62,6 +62,8 @@ function getGame(play = "", ratings = '1600,1800,2000,2200,2500', speeds = 'blit
             displayLinks(chessData.links);
 
             updateGraph(chessData);
+
+            return data;
 
         })
         .catch((error) => {
