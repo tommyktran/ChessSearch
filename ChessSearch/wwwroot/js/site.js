@@ -58,7 +58,7 @@ function getGame(play = "", ratings = '1600,1800,2000,2200,2500', speeds = 'blit
             } else {
                 document.getElementById('opening').innerText = data.opening.name;
             }
-            displayPosition();
+            displayPosition(play);
             displayLinks(chessData.links);
 
             updateGraph(chessData);
@@ -75,9 +75,9 @@ function getGame(play = "", ratings = '1600,1800,2000,2200,2500', speeds = 'blit
         });
 };
 
-function displayPosition() {
+function displayPosition(moves) {
     chess.reset()
-    for (let move of document.getElementById("moves").value.split(",")) {
+    for (let move of moves.split(",")) {
         chess.move(move, { sloppy: true });
         console.log(move);
 
