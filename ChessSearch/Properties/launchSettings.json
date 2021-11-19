@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "WebApplication2": {
+    "ChessSearch": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

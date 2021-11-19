@@ -17,6 +17,20 @@
 var board1 = Chessboard('board1', 'start')
 let results;
 const chess = new Chess()
+let data;
+
+let labels;
+let config = {
+    type: 'bar',
+    data: data,
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    },
+};
 
 function getGame(play = "", ratings = '1600,1800,2000,2200,2500', speeds = 'blitz,rapid,classical') {
     fetch(`https://explorer.lichess.ovh/lichess?variant=standard&speeds=${speeds}&play=${play}&ratings=${ratings}`)
@@ -25,10 +39,21 @@ function getGame(play = "", ratings = '1600,1800,2000,2200,2500', speeds = 'blit
             console.log(data);
             //return data;
             results = data;
-            document.getElementById('results').value = JSON.stringify(data);
-            document.getElementById('opening').innerText = results.opening.name;
+            if (play !== '') {
+                document.getElementById('results').value = JSON.stringify(data);
+            }
+            if (play == '') {
+                document.getElementById('opening').innerText = 'Starting Position'
+            } else {
+                document.getElementById('opening').innerText = results.opening.name;
+            }
             displayPosition();
             displayLinks(data);
+
+            myChart.data.labels = data.moves.map(x => x.san);
+            myChart.data.datasets[0].data = data.moves.map(x => x.white + x.draws + x.black);
+            myChart.update();
+
         })
         .catch((error) => {
             document.getElementById('results').value = 'Error ' + error.toString() + '\n\n Check if your input was correct.';
@@ -50,7 +75,7 @@ function displayPosition() {
 }
 
 function displayLinks(jsonData) {
-    let games = jsonData.recentGames;
+    let games = [...jsonData.recentGames];
     document.getElementById('games').innerHTML = '';
     for (let game of games) {
         document.getElementById('games').innerHTML += `<p><a href='${makeLichessLink(game.id)}'>${makeLichessLink(game.id)}</a></p>`;
@@ -60,3 +85,40 @@ function displayLinks(jsonData) {
 function makeLichessLink(id) {
     return 'https://lichess.org/' + id;
 }
+
+const ctx = document.getElementById('myChart');
+let myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: [],
+        datasets: [{
+            data: [],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.7)',
+            ]
+        }],
+    },
+    options: {
+        plugins: {
+            title: {
+                display: true,
+                text: 'Most Common Moves in This Position'
+            },
+            legend: {
+                display: false
+            },
+        },
+        
+        scales: {
+            y: {
+                beginAtZero: true,
+                text: 'Number of Games',
+            },
+            x: {
+                text: 'Moves',
+            }
+        }
+    },
+});
+
+getGame();
