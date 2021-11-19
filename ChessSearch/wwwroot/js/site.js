@@ -45,7 +45,7 @@ function getGame(play = "", ratings = '1600,1800,2000,2200,2500', speeds = 'blit
         .then(response => response.json())
         .then((data) => {
             console.log(data);
-            //return data;
+            return data;
 
             let chessData = new ChessData([...data.recentGames], data.moves.map(x => x.san), data.moves.map(x => x.white + x.draws + x.black))
 
@@ -56,7 +56,7 @@ function getGame(play = "", ratings = '1600,1800,2000,2200,2500', speeds = 'blit
             if (play == '') {
                 document.getElementById('opening').innerText = 'Starting Position'
             } else {
-                document.getElementById('opening').innerText = results.opening.name;
+                document.getElementById('opening').innerText = data.opening.name;
             }
             displayPosition();
             displayLinks(chessData.links);
