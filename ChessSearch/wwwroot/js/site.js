@@ -137,5 +137,8 @@ let myChart = new Chart(ctx, {
 });
 
 
-
 getGame();
+
+// Setting initial value for input fields
+document.getElementById("moves").value = 'e2e4,e7e5,g1f3,b8c6,f1b5';
+document.getElementById("ratings").value = '1600,1800,2000';
